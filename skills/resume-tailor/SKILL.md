@@ -33,13 +33,7 @@ build, and never improvise a Markdown-to-PDF converter as a substitute.
 
 ## Where your data lives
 
-Resolve the workspace once, at the start of every run:
-
-1. If `${user_config.workspace}` is a real absolute path, that is the workspace.
-2. Otherwise — it's blank, or it still reads as a literal `${user_config...}` placeholder
-   because the user never configured it — use `${CLAUDE_PLUGIN_DATA}`.
-
-This skill's files live in `<workspace>/resume-tailor/`:
+`~/life-ops/resume-tailor/` — create it if it doesn't exist.
 
 | What | Where |
 |---|---|
@@ -49,12 +43,12 @@ This skill's files live in `<workspace>/resume-tailor/`:
 | Application log | `applications.md` |
 
 The **master resume stays where the user keeps it** — usually in their own repo — and its
-path is recorded in `config.json`. Never move it into the workspace, and never write into
-`${CLAUDE_PLUGIN_ROOT}`.
+path is recorded in `config.json`. Never move it, and never write into
+`${CLAUDE_PLUGIN_ROOT}` — that's the read-only plugin install, replaced on update.
 
 ## STEP 0 — First-run setup
 
-If `<workspace>/resume-tailor/config.json` is missing, ask for what you need and write it:
+If `~/life-ops/resume-tailor/config.json` is missing, ask for what you need and write it:
 
 1. **Path to your master LaTeX resume (`.tex`)?** This is what the skill is built around. If
    they hand you a `.md`, `.txt`, `.pdf` or `.docx` instead, accept it — record it and note
@@ -258,7 +252,7 @@ Never overwrite the master resume. Copy it, apply approved edits to the copy, th
 
 ```bash
 "${CLAUDE_PLUGIN_ROOT}/skills/resume-tailor/scripts/build_pdf.sh" <path-to-edited.tex> \
-    --out-dir "<workspace>/resume-tailor/output" \
+    --out-dir "$HOME/life-ops/resume-tailor/output" \
     --base "<file_stem from config.json>" \
     --pages <page_limit from config.json>
 ```
@@ -296,7 +290,7 @@ path.
 
 ### 8. Log it
 
-Append a row to `<workspace>/resume-tailor/applications.md` (create with a header if
+Append a row to `~/life-ops/resume-tailor/applications.md` (create with a header if
 missing):
 
 ```markdown

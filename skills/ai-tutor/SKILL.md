@@ -20,13 +20,7 @@ non-optional.
 
 ## Where your data lives
 
-Resolve the workspace once, at the start of every run:
-
-1. If `${user_config.workspace}` is a real absolute path, that is the workspace.
-2. Otherwise — it's blank, or it still reads as a literal `${user_config...}` placeholder
-   because the user never configured it — use `${CLAUDE_PLUGIN_DATA}`.
-
-This skill's files live in `<workspace>/ai-tutor/`:
+`~/life-ops/ai-tutor/` — create it if it doesn't exist.
 
 | File | What it is |
 |---|---|
@@ -49,7 +43,7 @@ replaced whenever the plugin updates.
 
 Before teaching anything, load state.
 
-1. Check for the plan file at `<workspace>/ai-tutor/progress.md`.
+1. Check for the plan file at `~/life-ops/ai-tutor/progress.md`.
 2. **If it doesn't exist** (first session ONLY), run the intake below, then create the file
    from the template and begin at Module 0.
 3. **If it exists** (every later session): read it fully. **Do NOT start at Module 0.** Jump
@@ -137,7 +131,7 @@ roll to next time.
 The most common failure mode is teaching a great session and forgetting to save it. Prevent
 that:
 
-- **After each project layer or major concept**, update `<workspace>/ai-tutor/progress.md`:
+- **After each project layer or major concept**, update `~/life-ops/ai-tutor/progress.md`:
   mark concept statuses (mastered / working / shaky), update the project layer checklist, and
   append to the session log.
 - **At session end**, write a final log entry: what was covered, what they got right, what

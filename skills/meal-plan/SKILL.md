@@ -25,13 +25,7 @@ that every meal is one they've actually eaten.
 
 ## Where your data lives
 
-Resolve the workspace once, at the start of every run:
-
-1. If `${user_config.workspace}` is a real absolute path, that is the workspace.
-2. Otherwise — it's blank, or it still reads as a literal `${user_config...}` placeholder
-   because the user never configured it — use `${CLAUDE_PLUGIN_DATA}`.
-
-This skill's files live in `<workspace>/meal-plan/`:
+`~/life-ops/meal-plan/` — create it if it doesn't exist.
 
 | File | What it is |
 |---|---|
@@ -47,7 +41,7 @@ Never write into `${CLAUDE_PLUGIN_ROOT}` — it is replaced whenever the plugin 
 
 ## STEP 0 — First-run setup
 
-Check for `<workspace>/meal-plan/meals.json`. **If it's missing, there is nothing to plan
+Check for `~/life-ops/meal-plan/meals.json`. **If it's missing, there is nothing to plan
 from** — set it up before anything else.
 
 Ask the user to export their Lose It! food log: **Lose It! web app → Settings → Export
@@ -55,14 +49,14 @@ Data**, which downloads a CSV. Then run the bundled importer:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/scripts/import_lose_it.py" \
-    <export.csv> -o "<workspace>/meal-plan/meals.json"
+    <export.csv> -o "$HOME/life-ops/meal-plan/meals.json"
 ```
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/references/meals-schema.md` for the flags, the
 output format, and what to do when a column doesn't match. Don't invent a meals file on the
 user's behalf.
 
-Then check for `<workspace>/meal-plan/profile.json`. If it's missing, ask — briefly, in one
+Then check for `~/life-ops/meal-plan/profile.json`. If it's missing, ask — briefly, in one
 message — and write their answers to it:
 
 1. **Daily calorie target?** If they don't know one, say so plainly: this skill plans to a
@@ -98,7 +92,7 @@ medical territory and not what this skill is for. Plan to the number you were gi
 
 ## Avoiding repeats (history)
 
-The skill keeps a memory of past plans in `<workspace>/meal-plan/history.jsonl` — one JSON
+The skill keeps a memory of past plans in `~/life-ops/meal-plan/history.jsonl` — one JSON
 line per generated week:
 
 ```json

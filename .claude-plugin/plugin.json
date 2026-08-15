@@ -14,13 +14,5 @@
     "personal",
     "productivity",
     "skills"
-  ],
-  "userConfig": {
-    "workspace": {
-      "type": "directory",
-      "title": "Workspace directory",
-      "description": "Where Life Ops skills keep your data (progress files, history, generated output). Leave blank to use the plugin's own data directory, which survives plugin updates.",
-      "required": false
-    }
-  }
+  ]
 }

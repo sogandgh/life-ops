@@ -1,7 +1,7 @@
 # meals.json — schema and how to create one
 
 This skill plans only from meals the user has **actually eaten**, imported from their
-**Lose It!** food journal. That data lives in `<workspace>/meal-plan/meals.json`. Without it
+**Lose It!** food journal. That data lives in `~/life-ops/meal-plan/meals.json`. Without it
 there is nothing to plan from, so creating it is the first-run task.
 
 ## Schema
@@ -67,7 +67,7 @@ them to a URL that may have moved.
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/scripts/import_lose_it.py" \
-    <export.csv> -o "<workspace>/meal-plan/meals.json"
+    <export.csv> -o "$HOME/life-ops/meal-plan/meals.json"
 ```
 
 It groups rows into meals by date + meal type (everything logged as Tuesday's dinner becomes
