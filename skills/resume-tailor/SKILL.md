@@ -1,6 +1,6 @@
 ---
 name: resume-tailor
-description: Assess a job description against the user's resume and, only if needed, tailor the resume and build a numbered PDF. Use whenever the user pastes a job description, shares a job posting URL, asks "am I a good fit / what are my chances" for a role, asks to tailor or customize their resume for a job, or runs /resume-tailor.
+description: Assess a job description against the user's resume and, only if needed, tailor their LaTeX resume and build a numbered PDF. Use whenever the user pastes a job description, shares a job posting URL, asks "am I a good fit / what are my chances" for a role, asks to tailor or customize their resume for a job, or runs /resume-tailor.
 argument-hint: "[optional: a job posting URL, or paste the job description]"
 ---
 
@@ -12,6 +12,22 @@ with the user's explicit approval on every single change.
 The hard requirement: **the resume must never say anything untrue.** Treat that as
 inviolable. A weaker match honestly stated is the correct output; an inflated resume is a
 failure of the task even if the user seems to want a higher score.
+
+## Requirements
+
+| Needs | Why |
+|---|---|
+| A master resume in **LaTeX** (`.tex`) | The source of truth this skill reads, edits a copy of, and compiles |
+| **Docker**, with the `texlive/texlive` image | The build engine. Full TeX Live, so no package or font is ever missing. The image is pulled automatically on first build (several GB, one time) |
+| *or* a local **`pdflatex`** | Fallback if Docker isn't running. A minimal distribution like BasicTeX often fails on missing packages or font outlines — see `scripts/SETUP.md` |
+
+**Fit assessment needs none of this.** Steps 1–6 (fetch the posting, assess fit, propose
+edits) work against a resume in any readable format — `.tex`, `.md`, `.txt`, `.pdf`, `.docx`.
+Only Step 7, building the PDF, requires LaTeX plus an engine.
+
+So when the user has no `.tex` source or no engine, still do the valuable part: assess and
+propose the edits, then say plainly which piece you can't do and why. Never quietly skip the
+build, and never improvise a Markdown-to-PDF converter as a substitute.
 
 ---
 
@@ -40,18 +56,23 @@ path is recorded in `config.json`. Never move it into the workspace, and never w
 
 If `<workspace>/resume-tailor/config.json` is missing, ask for what you need and write it:
 
-1. **Path to your master resume?** A `.tex` source enables PDF generation. `.md` / `.txt`
-   works for assessment and edit proposals but can't be built into a PDF — say so plainly
-   rather than pretending. If they only have a `.pdf` or `.docx`, you can still read it to
-   assess fit; tell them PDF generation needs a source file.
+1. **Path to your master LaTeX resume (`.tex`)?** This is what the skill is built around. If
+   they hand you a `.md`, `.txt`, `.pdf` or `.docx` instead, accept it — record it and note
+   in `config.json` that PDF generation is unavailable, so later runs don't keep asking.
 2. **Name for generated files?** Used only for the filename stem, e.g. `Jane_Doe_Resume`.
 3. **How many pages should the resume be?** Default 1; two is normal for longer careers.
+
+If the resume is `.tex`, confirm an engine exists before promising a PDF —
+`docker info` succeeding, or `command -v pdflatex`. If neither is available, point them at
+`${CLAUDE_PLUGIN_ROOT}/skills/resume-tailor/scripts/SETUP.md` and carry on with the
+assessment; a missing engine blocks only the build.
 
 ```json
 {
   "resume_path": "/Users/you/projects/resume/resume.tex",
   "file_stem": "Jane_Doe_Resume",
-  "page_limit": 1
+  "page_limit": 1,
+  "can_build_pdf": true
 }
 ```
 
@@ -229,8 +250,9 @@ of the edits.
 
 ### 7. Build the PDF
 
-Only for a `.tex` master. For a Markdown or text resume, hand back the edited content and say
-plainly that PDF generation needs a LaTeX source — don't improvise a converter.
+Only for a `.tex` master (`can_build_pdf: true`). For any other format, hand back the edited
+content and say plainly that PDF generation needs a LaTeX source — don't improvise a
+converter.
 
 Never overwrite the master resume. Copy it, apply approved edits to the copy, then run:
 

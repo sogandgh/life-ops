@@ -1,6 +1,6 @@
 ---
 name: meal-plan
-description: Generate a fresh weekly meal plan (7 days x breakfast/lunch/dinner/snack) drawn from the user's own food log, scaled to a daily calorie target. Use whenever the user asks for a meal plan, weekly plan, what to eat this week, or runs /meal-plan.
+description: Generate a fresh weekly meal plan (7 days x breakfast/lunch/dinner/snack) drawn from the user's own Lose It! food journal, scaled to a daily calorie target. Use whenever the user asks for a meal plan, weekly plan, what to eat this week, or runs /meal-plan.
 argument-hint: "[optional: a daily calorie target, e.g. 1800]"
 ---
 
@@ -9,6 +9,17 @@ argument-hint: "[optional: a daily calorie target, e.g. 1800]"
 Build the user a **new 7-day meal plan** using **only meals they have actually eaten**,
 scaled to a daily calorie target. The whole point: every day is a coherent set of real meals
 (real breakfasts, lunches, dinners that go together), never a random pile of unrelated foods.
+
+## Requirements
+
+| Needs | Why |
+|---|---|
+| A **Lose It!** account with logged meals | The plan is built from the user's own food journal. This skill reads the Lose It! CSV export; other trackers are not supported |
+| **Python 3** | Runs the bundled importer. Standard library only — nothing to install |
+
+Without a Lose It! export there is nothing to plan from. If the user doesn't use Lose It!,
+say so directly rather than improvising a plan from invented meals — the whole premise is
+that every meal is one they've actually eaten.
 
 ---
 
@@ -29,7 +40,7 @@ This skill's files live in `<workspace>/meal-plan/`:
 | `history.jsonl` | One line per approved week, so weeks don't repeat |
 
 Bundled read-only references ship with the plugin under `${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/`:
-`references/meals-schema.md`, `assets/meals.example.json`, `scripts/import_food_log.py`.
+`references/meals-schema.md`, `assets/meals.example.json`, `scripts/import_lose_it.py`.
 Never write into `${CLAUDE_PLUGIN_ROOT}` — it is replaced whenever the plugin updates.
 
 ---
@@ -37,10 +48,19 @@ Never write into `${CLAUDE_PLUGIN_ROOT}` — it is replaced whenever the plugin 
 ## STEP 0 — First-run setup
 
 Check for `<workspace>/meal-plan/meals.json`. **If it's missing, there is nothing to plan
-from** — set it up before anything else. Read
-`${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/references/meals-schema.md` and walk the user through
-one of the three options it describes (import a tracker CSV export, point at an existing
-file, or build it conversationally). Don't invent a meals file on their behalf.
+from** — set it up before anything else.
+
+Ask the user to export their Lose It! food log: **Lose It! web app → Settings → Export
+Data**, which downloads a CSV. Then run the bundled importer:
+
+```bash
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/scripts/import_lose_it.py" \
+    <export.csv> -o "<workspace>/meal-plan/meals.json"
+```
+
+Read `${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/references/meals-schema.md` for the flags, the
+output format, and what to do when a column doesn't match. Don't invent a meals file on the
+user's behalf.
 
 Then check for `<workspace>/meal-plan/profile.json`. If it's missing, ask — briefly, in one
 message — and write their answers to it:

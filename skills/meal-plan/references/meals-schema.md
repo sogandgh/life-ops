@@ -1,8 +1,8 @@
 # meals.json — schema and how to create one
 
-This skill plans only from meals the user has **actually eaten**. That data lives in
-`<workspace>/meal-plan/meals.json`. Without it there is nothing to plan from, so creating it
-is the first-run task.
+This skill plans only from meals the user has **actually eaten**, imported from their
+**Lose It!** food journal. That data lives in `<workspace>/meal-plan/meals.json`. Without it
+there is nothing to plan from, so creating it is the first-run task.
 
 ## Schema
 
@@ -46,47 +46,57 @@ working file.
 selecting whole entries guarantees the day is coherent — real breakfasts and real dinners,
 never a pile of unrelated foods assembled to hit a number.
 
-## Three ways to create the file
+## Creating the file from Lose It!
 
-### 1. Import a food-tracker export (best, if they have one)
+**Requirements: a Lose It! account with logged meals, and Python 3** (standard library only).
+Other food trackers are not supported.
 
-Most tracking apps export CSV. The bundled importer matches columns by alias, so exports from
-Lose It!, MyFitnessPal, Cronometer and others generally work as-is:
+### 1. Export from Lose It!
+
+In the **Lose It! web app → Settings → Export Data**. That downloads a CSV of the food log
+with columns like:
+
+```
+Date, Name, Icon, Type, Quantity, Units, Calories, Fat (g), Protein (g), Carbohydrates (g)
+```
+
+If the user can't find the export, have them look in the app's settings rather than sending
+them to a URL that may have moved.
+
+### 2. Run the importer
 
 ```bash
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/scripts/import_food_log.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/meal-plan/scripts/import_lose_it.py" \
     <export.csv> -o "<workspace>/meal-plan/meals.json"
 ```
 
-It groups rows into meals by date + meal type, collapses meals eaten on multiple days into
-one entry with `times_logged`, and drops sub-50-calorie sittings (a lone black coffee is not
-a breakfast). Useful flags: `--dry-run` to preview, `--top N` to keep only the N most-logged
-meals per category, `--min-calories N` to change the floor.
+It groups rows into meals by date + meal type (everything logged as Tuesday's dinner becomes
+one dinner), collapses meals eaten on multiple days into one entry with `times_logged`, and
+drops sub-50-calorie sittings — a lone black coffee is not a breakfast.
 
-If it can't find a column it prints the headers it saw and the aliases it accepts — tell the
-user which column to rename, don't guess at the data.
+| Flag | Effect |
+|---|---|
+| `--dry-run` | Print the summary, write nothing |
+| `--top N` | Keep only the N most-logged meals per category |
+| `--min-calories N` | Change the 50-calorie floor |
 
-Typical export paths: Lose It! → web app, Settings → Export Data. MyFitnessPal → web app,
-Settings → Export Data → Nutrition. Cronometer → Settings → Account → Export Data. If the
-user isn't sure, ask them to find the export in their app rather than sending them to a URL
-that may have moved.
+Columns are matched case-insensitively and by alias, so small changes to Lose It!'s export
+format won't break the import. If a required column still can't be found, the script prints
+the headers it saw and the aliases it accepts — tell the user which column to rename rather
+than guessing at the data.
 
-### 2. Point at an existing file
+### How much data is enough
 
-If they already have meals.json somewhere, copy it into the workspace (or ask whether they'd
-rather the workspace point at their location).
+The variety rules need roughly 5 breakfasts, 5 lunches, 6 dinners and 4 snacks to work with.
+Below that the week will feel repetitive — say so plainly and suggest logging more before
+planning, rather than producing a plan that repeats.
 
-### 3. Build it by hand, conversationally
+### If the file needs writing by hand
 
-Viable and often pleasant — ask for their regular meals a category at a time:
-
-> "List the breakfasts you actually eat, with rough portions. Five or six is plenty to start."
-
-Estimate calories and macros for each, **show the estimates and get them confirmed**, then
-write the file. Set `times_logged` from how often they say they eat it (weekly → 4, rarely →
-1). Aim for at least 5 breakfasts, 5 lunches, 6 dinners, 4 snacks — below that the variety
-rules can't be satisfied and the week will feel repetitive. It's fine to start small and add
-more later; say so rather than making them grind through thirty meals up front.
+Nothing stops a correctly-shaped `meals.json` from being written directly to the schema
+above — but only do that if the user asks. **Never estimate meals into existence to work
+around a missing export**, since the skill's entire premise is that every meal is one they
+have actually eaten.
 
 ## Adding meals later
 

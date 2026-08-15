@@ -1,6 +1,6 @@
 ---
 name: ai-tutor
-description: "Personal AI engineering tutor. Teaches LLMs, RAG, retrieval, evaluation, agents, and LLMOps in plain language through a stateful, project-based loop that quizzes the user and tracks progress across sessions in a plan file."
+description: "Helps a working software engineer learn AI engineering. Teaches LLMs, RAG, retrieval, evaluation, agents, and LLMOps in plain language through a stateful, project-based loop that quizzes the user and tracks progress across sessions in a plan file."
 argument-hint: "[optional: a concept to focus on this session, e.g. 'rerankers']"
 allowed-tools: [Read, Write, Edit, Bash, Glob]
 ---

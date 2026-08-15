@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Turn a food-tracking CSV export into the meals.json this skill plans from.
+"""Turn a Lose It! CSV export into the meals.json this skill plans from.
 
-Works with exports from Lose It!, MyFitnessPal, Cronometer, and most other trackers —
-columns are matched by alias, case-insensitively, so exact header text doesn't matter.
+Written for the Lose It! food-log export, whose columns are:
 
-    import_food_log.py <export.csv> -o <meals.json>
+    Date, Name, Icon, Type, Quantity, Units, Calories, Fat (g), Protein (g),
+    Carbohydrates (g), ...
+
+Get it from the Lose It! web app: Settings -> Export Data. Columns are matched
+case-insensitively and by alias, so minor changes to Lose It!'s export format won't break
+the import.
+
+    import_lose_it.py <export.csv> -o <meals.json>
 
 Rows are grouped into meals by (date, meal type): everything logged as Tuesday's dinner
 becomes one dinner. Identical meals logged on different days collapse into a single entry
@@ -144,7 +150,7 @@ def build_meals(path, columns, min_calories):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("csv_path", help="food-tracker CSV export")
+    parser.add_argument("csv_path", help="Lose It! CSV export")
     parser.add_argument("-o", "--output", default="meals.json", help="output path (default: meals.json)")
     parser.add_argument("--top", type=int, default=0, help="keep only the N most-logged meals per category")
     parser.add_argument("--min-calories", type=int, default=50, help="drop meals under N calories (default: 50)")
