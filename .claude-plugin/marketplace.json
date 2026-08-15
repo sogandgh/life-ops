@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "life-ops",
+  "description": "Personal skills for Claude Code — the useful, non-code parts of running a life.",
+  "owner": {
+    "name": "sogandgh",
+    "url": "https://github.com/sogandgh"
+  },
+  "plugins": [
+    {
+      "name": "life-ops",
+      "description": "A growing collection of personal skills for Claude Code — the useful, non-code parts of running a life.",
+      "author": {
+        "name": "sogandgh",
+        "url": "https://github.com/sogandgh"
+      },
+      "category": "productivity",
+      "homepage": "https://github.com/sogandgh/life-ops",
+      "license": "MIT",
+      "source": "./"
+    }
+  ]
+}

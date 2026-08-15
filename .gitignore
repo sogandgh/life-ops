@@ -1,0 +1,26 @@
+# Personal data must never land in this repo — it belongs in your workspace.
+meals.json
+!skills/meal-plan/assets/meals.example.json
+profile.json
+config.json
+progress.md
+history.jsonl
+applications.md
+output/
+job-descriptions/
+*.pdf
+*.tex
+!**/*.example.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

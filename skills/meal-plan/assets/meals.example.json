@@ -1,0 +1,104 @@
+{
+  "source": "example — replace with your own logged meals",
+  "generated": "2026-01-01",
+  "note": "A tiny sample showing the shape. Real files have 30-50 meals per category. See references/meals-schema.md.",
+  "meals": {
+    "Breakfast": [
+      {
+        "calories": 220,
+        "protein": 16,
+        "carb": 16,
+        "fat": 11,
+        "times_logged": 12,
+        "foods": [
+          { "name": "Eggs", "qty": "2", "units": "large", "cal": 140, "protein": 12, "carb": 1, "fat": 10 },
+          { "name": "Whole Wheat Bread", "qty": "1", "units": "slice", "cal": 80, "protein": 4, "carb": 15, "fat": 1 }
+        ]
+      },
+      {
+        "calories": 340,
+        "protein": 20,
+        "carb": 48,
+        "fat": 8,
+        "times_logged": 7,
+        "foods": [
+          { "name": "Rolled Oats", "qty": "0.5", "units": "cup", "cal": 150, "protein": 5, "carb": 27, "fat": 3 },
+          { "name": "Greek Yogurt, plain", "qty": "150", "units": "g", "cal": 130, "protein": 14, "carb": 8, "fat": 4 },
+          { "name": "Blueberries", "qty": "0.5", "units": "cup", "cal": 40, "protein": 0, "carb": 11, "fat": 0 },
+          { "name": "Honey", "qty": "1", "units": "tsp", "cal": 20, "protein": 0, "carb": 6, "fat": 0 }
+        ]
+      }
+    ],
+    "Lunch": [
+      {
+        "calories": 420,
+        "protein": 35,
+        "carb": 22,
+        "fat": 18,
+        "times_logged": 9,
+        "foods": [
+          { "name": "Chicken Salad Bowl", "qty": "1", "units": "bowl", "cal": 420, "protein": 35, "carb": 22, "fat": 18 }
+        ]
+      },
+      {
+        "calories": 480,
+        "protein": 22,
+        "carb": 58,
+        "fat": 17,
+        "times_logged": 4,
+        "foods": [
+          { "name": "Turkey Sandwich", "qty": "1", "units": "whole", "cal": 400, "protein": 20, "carb": 45, "fat": 14 },
+          { "name": "Apple", "qty": "1", "units": "medium", "cal": 80, "protein": 0, "carb": 21, "fat": 0 }
+        ]
+      }
+    ],
+    "Dinner": [
+      {
+        "calories": 640,
+        "protein": 42,
+        "carb": 52,
+        "fat": 26,
+        "times_logged": 8,
+        "foods": [
+          { "name": "Salmon, baked", "qty": "140", "units": "g", "cal": 280, "protein": 34, "carb": 0, "fat": 16 },
+          { "name": "Jasmine Rice, cooked", "qty": "1", "units": "cup", "cal": 205, "protein": 4, "carb": 45, "fat": 0 },
+          { "name": "Roasted Vegetables", "qty": "1", "units": "cup", "cal": 155, "protein": 4, "carb": 7, "fat": 10 }
+        ]
+      },
+      {
+        "calories": 720,
+        "protein": 33,
+        "carb": 84,
+        "fat": 27,
+        "times_logged": 6,
+        "foods": [
+          { "name": "Pasta Bolognese", "qty": "1", "units": "plate", "cal": 650, "protein": 30, "carb": 80, "fat": 22 },
+          { "name": "Parmesan, grated", "qty": "2", "units": "tbsp", "cal": 70, "protein": 3, "carb": 4, "fat": 5 }
+        ]
+      }
+    ],
+    "Snacks": [
+      {
+        "calories": 120,
+        "protein": 10,
+        "carb": 11,
+        "fat": 5,
+        "times_logged": 15,
+        "foods": [
+          { "name": "Protein Bar", "qty": "0.5", "units": "piece", "cal": 120, "protein": 10, "carb": 11, "fat": 4.5 }
+        ]
+      },
+      {
+        "calories": 190,
+        "protein": 6,
+        "carb": 8,
+        "fat": 16,
+        "times_logged": 5,
+        "foods": [
+          { "name": "Almonds", "qty": "28", "units": "g", "cal": 165, "protein": 6, "carb": 6, "fat": 14 },
+          { "name": "Dark Chocolate", "qty": "1", "units": "square", "cal": 25, "protein": 0, "carb": 2, "fat": 2 }
+        ]
+      }
+    ]
+  }
+}
