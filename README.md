@@ -1,10 +1,10 @@
 # Life Ops
 
-A growing collection of personal skills for [Claude Code](https://claude.com/claude-code) — the useful, non-code parts of running a life.
+A growing collection of personal skills for [Claude Code](https://claude.com/claude-code).
 
 | Skill | What it does | Needs |
 | --- | --- | --- |
-| `ai-tutor` | Teaches a working software engineer AI engineering — LLMs, RAG, retrieval, evaluation, agents, LLMOps — through one real project, quizzing you and remembering where you left off. | — |
+| `ai-tutor` | Teaches a working software engineer AI engineering: LLMs, RAG, retrieval, evaluation, agents, LLMOps, through one real project, quizzing you and remembering where you left off. | — |
 | `meal-plan` | Builds a 7-day meal plan from meals you've actually eaten, scaled to a calorie target, with a grocery list. | [Lose It!](https://www.loseit.com/), Python 3 |
 | `resume-tailor` | Assesses a job posting against your resume, tailors it only where needed with your approval, and builds a numbered PDF. | LaTeX resume; Docker or `pdflatex` |
 
@@ -14,8 +14,6 @@ A growing collection of personal skills for [Claude Code](https://claude.com/cla
 /plugin marketplace add sogandgh/life-ops
 /plugin install life-ops
 ```
-
-Then say what you want — "plan my meals for the week", "am I a good fit for this job?" — or call a skill directly with `/ai-tutor`, `/meal-plan`, `/resume-tailor`.
 
 ## Your stuff goes in `~/life-ops/`
 
@@ -37,13 +35,5 @@ Each skill creates what it needs and asks for the rest on first run. There's not
 
 Two things you supply:
 
-- **`meal-plan`** — export your food log from the Lose It! web app (**Settings → Export Data**) and hand over the CSV. The skill imports it. Other trackers aren't supported.
-- **`resume-tailor`** — tell it where your `.tex` resume lives. It stays put and is never modified; edits go to a copy. PDF building needs Docker (it pulls `texlive/texlive` on first build) or a local `pdflatex` — see [`SETUP.md`](skills/resume-tailor/scripts/SETUP.md). Without either, you still get the fit assessment and proposed edits.
-
-## Adding a skill
-
-Drop a directory under `skills/` with a `SKILL.md` and it's picked up. Keep data in `~/life-ops/<skill-name>/` and ask for what you need on first run.
-
-## License
-
-MIT
+- `meal-plan:` export your food log from the Lose It! web app (**Settings → Export Data**) and hand over the CSV. The skill imports it. Other trackers aren't supported.
+- `resume-tailor`: tell it where your `.tex` resume lives. It stays put and is never modified; edits go to a copy. PDF building needs Docker (it pulls `texlive/texlive` on first build) or a local `pdflatex`. see `SETUP.md`. Without either, you still get the fit assessment and proposed edits.
